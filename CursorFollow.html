@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Jungle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: background-color 1s ease;
+            background-color: #8BF5FA;
+            /* Light blue sky for happy jungle */
+            position: relative;
+        }
+        
+        body.dark-mode {
+            background-color: #3A0C3A;
+            /* Dark purple for creepy mode */
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .title {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            text-align: center;
+            transition: all 1s ease;
+            color: #FF6B6B;
+            text-shadow: 3px 3px 0 #FFF, 5px 5px 0 #FFD166;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .title.dark-mode {
+            font-family: 'Creepster', cursive;
+            color: #FF1744;
+            text-shadow: 0 0 10px #FF1744;
+            animation: flicker 2s infinite;
+        }
+        
+        @keyframes flicker {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+        
+        .characters-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin-top: 40px;
+        }
+        
+        .character {
+            position: absolute;
+            width: 70px;
+            height: 100px;
+            transition: all 1s ease;
+        }
+        
+        .head {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 1s ease;
+        }
+        
+        .body {
+            width: 50px;
+            height: 50px;
+            background-color: #222;
+            margin: -10px auto 0;
+            border-radius: 10px 10px 0 0;
+            transition: all 1s ease;
+        }
+        
+        .eyes-container {
+            display: flex;
+            justify-content: space-between;
+            width: 45px;
+            position: absolute;
+            top: 25px;
+        }
+        
+        .eye {
+            width: 14px;
+            height: 14px;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: all 1s ease;
+        }
+        
+        .pupil {
+            width: 7px;
+            height: 7px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 3.5px;
+            left: 3.5px;
+            transition: none;
+        }
+        
+        .character.dark-mode .head {
+            transform: scale(1.1);
+        }
+        
+        .character.dark-mode .eye {
+            background-color: #FF0000;
+        }
+        
+        .character.dark-mode .pupil {
+            width: 10px;
+            height: 10px;
+            background-color: #000;
+        }
+        
+        .character.dark-mode .body {
+            background-color: #111;
+        }
+        
+        .jungle-elements {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, #2E7D32, transparent);
+            z-index: -1;
+            transition: all 1s ease;
+        }
+        
+        .jungle-elements.dark-mode {
+            background: linear-gradient(to top, #1A0033, transparent);
+        }
+        
+        .sun {
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #FFD700;
+            transition: all 1s ease;
+        }
+        
+        .sun.dark-mode {
+            background-color: #4A0080;
+            box-shadow: 0 0 30px #4A0080;
+        }
+        
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: #E0E0E0;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #E0E0E0;
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        .moon.dark-mode {
+            opacity: 1;
+        }
+        
+        .cloud {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            transition: all 1s ease;
+        }
+        
+        .cloud:before,
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 80px;
+            left: 100px;
+        }
+        
+        .cloud1:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+        
+        .cloud1:after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+        
+        .cloud2 {
+            width: 80px;
+            height: 35px;
+            top: 120px;
+            left: 300px;
+        }
+        
+        .cloud2:before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+        }
+        
+        .cloud2:after {
+            width: 50px;
+            height: 35px;
+            top: -10px;
+            right: 15px;
+        }
+        
+        .cloud.dark-mode {
+            background-color: #444;
+            opacity: 0.3;
+        }
+        
+        .cloud.dark-mode:before,
+        .cloud.dark-mode:after {
+            background-color: #444;
+        }
+        
+        .warning-text {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #FF5252;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .warning-text.show {
+            opacity: 1;
+        }
+        
+        .center-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-family: 'Comic Sans MS', cursive;
+            z-index: 20;
+        }
+        
+        .center-button:hover {
+            background-color: #CC0000;
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .center-button.dark-mode {
+            background-color: #8B0000;
+            box-shadow: 0 0 15px #FF1744;
+        }
+        
+        .center-button.dark-mode:hover {
+            background-color: #660000;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .characters-container {
+                width: 350px;
+                height: 350px;
+            }
+            .character {
+                width: 50px;
+                height: 70px;
+            }
+            .head {
+                width: 50px;
+                height: 50px;
+            }
+            .body {
+                width: 35px;
+                height: 35px;
+                margin: -8px auto 0;
+            }
+            .eyes-container {
+                width: 30px;
+                top: 18px;
+            }
+            .eye {
+                width: 10px;
+                height: 10px;
+            }
+            .pupil {
+                width: 5px;
+                height: 5px;
+                top: 2.5px;
+                left: 2.5px;
+            }
+            .center-button {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <div class="container">
+        <h1 class="title" id="title">Welcome to the Happy Jungle</h1>
+
+        <div class="characters-container" id="charactersContainer">
+            <!-- Characters will be generated by JavaScript -->
+            <button class="center-button" id="toggleButton">Don't press it</button>
+        </div>
+
+        <p class="warning-text" id="warningText">I warned you...</p>
+    </div>
+
+    <div class="jungle-elements"></div>
+
+    <script>
+        // Character colors for happy mode
+        const happyColors = [
+            '#e53935', '#fb8c00', '#43a047', '#1e88e5',
+            '#8e24aa', '#d81b60', '#fdd835', '#00acc1',
+            '#5e35b1', '#f4511e', '#3949ab', '#00897b'
+        ];
+
+        // Character colors for dark mode
+        const darkColors = [
+            '#880E4F', '#4A148C', '#311B92', '#1A237E',
+            '#004D40', '#1B5E20', '#F57F17', '#E65100',
+            '#BF360C', '#263238', '#37474F', '#455A64'
+        ];
+
+        // Generate characters in a circle
+        const container = document.getElementById('charactersContainer');
+        const characterCount = 12;
+        const radius = 180; // Reduced radius to ensure characters fit within the container
+
+        for (let i = 0; i < characterCount; i++) {
+            const character = document.createElement('div');
+            character.className = 'character';
+
+            // Calculate position in a circle
+            const angle = (i / characterCount) * 2 * Math.PI;
+            const x = Math.cos(angle) * radius + 215; // Adjusted for new container size
+            const y = Math.sin(angle) * radius + 215; // Adjusted for new container size
+
+            character.style.left = `${x}px`;
+            character.style.top = `${y}px`;
+
+            // Random size variation
+            const scale = 0.8 + Math.random() * 0.4;
+            character.style.transform = `scale(${scale})`;
+
+            // Random color
+            const color = happyColors[Math.floor(Math.random() * happyColors.length)];
+
+            // Create head
+            const head = document.createElement('div');
+            head.className = 'head';
+            head.style.backgroundColor = color;
+
+            // Add eyes
+            const eyesContainer = document.createElement('div');
+            eyesContainer.className = 'eyes-container';
+
+            const leftEye = document.createElement('div');
+            leftEye.className = 'eye';
+            const leftPupil = document.createElement('div');
+            leftPupil.className = 'pupil';
+            leftEye.appendChild(leftPupil);
+
+            const rightEye = document.createElement('div');
+            rightEye.className = 'eye';
+            const rightPupil = document.createElement('div');
+            rightPupil.className = 'pupil';
+            rightEye.appendChild(rightPupil);
+
+            eyesContainer.appendChild(leftEye);
+            eyesContainer.appendChild(rightEye);
+            head.appendChild(eyesContainer);
+
+            // Create body
+            const body = document.createElement('div');
+            body.className = 'body';
+
+            character.appendChild(head);
+            character.appendChild(body);
+            container.appendChild(character);
+        }
+
+        // Toggle between happy and dark mode
+        const toggleButton = document.getElementById('toggleButton');
+        const title = document.getElementById('title');
+        const warningText = document.getElementById('warningText');
+        let isDarkMode = false;
+
+        toggleButton.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+
+            // Toggle dark mode classes
+            document.body.classList.toggle('dark-mode');
+            title.classList.toggle('dark-mode');
+            toggleButton.classList.toggle('dark-mode');
+            document.querySelector('.jungle-elements').classList.toggle('dark-mode');
+            document.querySelector('.sun').classList.toggle('dark-mode');
+            document.querySelector('.moon').classList.toggle('dark-mode');
+            document.querySelectorAll('.cloud').forEach(cloud => {
+                cloud.classList.toggle('dark-mode');
+            });
+
+            // Change title text
+            if (isDarkMode) {
+                title.textContent = 'I am watching you';
+                warningText.classList.add('show');
+
+                // Change character colors to dark mode
+                const characters = document.querySelectorAll('.character');
+                characters.forEach(character => {
+                    const head = character.querySelector('.head');
+                    const darkColor = darkColors[Math.floor(Math.random() * darkColors.length)];
+                    head.style.backgroundColor = darkColor;
+                    character.classList.add('dark-mode');
+                });
+            } else {
+                title.textContent = 'Welcome to the Happy Jungle';
+                warningText.classList.remove('show');
+
+                // Change character colors back to happy mode
+                const characters = document.querySelectorAll('.character');
+                characters.forEach(character => {
+                    const head = character.querySelector('.head');
+                    const happyColor = happyColors[Math.floor(Math.random() * happyColors.length)];
+                    head.style.backgroundColor = happyColor;
+                    character.classList.remove('dark-mode');
+                });
+            }
+        });
+
+        // Mouse tracking for eye movement
+        document.addEventListener('mousemove', (e) => {
+            const characters = document.querySelectorAll('.character');
+
+            characters.forEach(character => {
+                const eyes = character.querySelectorAll('.eye');
+                const rect = character.getBoundingClientRect();
+                const characterCenterX = rect.left + rect.width / 2;
+                const characterCenterY = rect.top + rect.height / 3; // Eyes are in the upper third
+
+                eyes.forEach(eye => {
+                    const eyeRect = eye.getBoundingClientRect();
+                    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+                    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+                    const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterY);
+                    const distance = Math.min(3, Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY) / 50);
+
+                    const pupil = eye.querySelector('.pupil');
+                    const pupilX = Math.cos(angle) * distance;
+                    const pupilY = Math.sin(angle) * distance;
+
+                    pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
